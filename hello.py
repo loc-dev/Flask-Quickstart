@@ -1,25 +1,24 @@
 '''
-1º [Linha 07] - Importando a classe Flask do módulo flask
-2º [Linha 09] - Criando uma instância de um objeto Flask e atribuindo-o à variável app
-3º [Linha 11] - O decorador @route permite associar um caminho web da URL a função Python definida
-4º [Linha 12 até 17] e [Linha 19 até 25] - A Função quando é chamada, retona a mensagem definida na função
+1º [Linha 12] - Importando a classe Flask do módulo flask
+2º [Linha 13] - Importando a função render_template
+3º [Linha 15] - Criando uma instância de um objeto Flask e atribuindo-o à variável app
+4º [Linha 17] - O decorador @route permite associar um caminho web da URL a função Python definida
+5º [Linha 18 e 19] - A Função quando é chamada, retorna a mensagem definida na função
+6º [Linha 21 e 22] - O decorador @route permite associar um comportamento de redirecionamento
+com uma requisição obrigatória (name)
+7º [Linha 23 e 24] - Quando a função for chamada, o nome do modelo definido será retornado como String,
+juntamente, com argumento para ser repassado palavra-chave do modelo definido.
 '''
 from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
-@app.route("/projects/")
-def projects():
-    '''
-    Comportamento de Redirecionamento - Caso URL esteja com barra no final (e.x.: /projects/) no decorador route(),
-    significa que se o usuário acessar sem a barra no final da URL, o Flask redireciona para uma URL Canônico.
-    '''
-    return "The project page"
+@app.route('/')
+def index():
+    return 'Index'
 
-@app.route("/about")
-def about():
-    '''
-    URL Única - Caso a URL que esteja definida no decorador route() não apresenta barra final,
-    significa que está URL é única, mas, se o usuário acessar com uma barra no final da URL, será produzido o erro 404.
-    '''
-    return "The about page"
+@app.route('/hello/')
+@app.route('/hello/<name>')
+def hello(name=None):
+    return render_template('hello.html', name=name)
